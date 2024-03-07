@@ -9,7 +9,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(express.static('public'))
 
-// Définition du répertoire des vues (optionnel si vous avez un répertoire différent)
+let clientUserInfo;
 
 // use the issuer url here
 const keycloakIssuer = await Issuer.discover("http://localhost:8080/realms/keycloak-express")
@@ -34,11 +34,12 @@ const client = new keycloakIssuer.Client({
     })
   )
 
-  app.use(passport.initialize());
+app.use(passport.initialize());
 app.use(passport.authenticate('session'));
 
 // this creates the strategy
 passport.use('oidc', new Strategy({client}, (tokenSet, userinfo, done)=>{
+        clientUserInfo = userinfo;
         return done(null, tokenSet.claims());
     })
 )
@@ -63,7 +64,7 @@ app.get('/auth/callback', (req, res, next) => {
     })(req, res, next);
 });
 
-// function to check weather user is authenticated, req.isAuthenticated is populated by password.js
+
 // use this function to protect all routes
 var checkAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) { 
@@ -73,7 +74,9 @@ var checkAuthenticated = (req, res, next) => {
 }
 
 app.get('/testauth', checkAuthenticated, (req, res) => {
-    res.render('test');
+     console.log(clientUserInfo)
+    let username = clientUserInfo.preferred_username
+    res.render('test', {username : username});
 });
 
 app.get('/other', (req, res) => {
