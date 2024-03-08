@@ -129,4 +129,5 @@ Cette configuration à déjà été faite dans le realm `express-app` de ce proj
 ### References
 - [open-client Documentation](https://github.com/panva/node-openid-client/blob/main/docs/README.md)
 - [keycloak-Documentation](https://github.com/panva/node-openid-client/blob/main/docs/README.md)
+- [keycloak-tutorial](https://www.keycloak.org/getting-started/getting-started-docker)
   
