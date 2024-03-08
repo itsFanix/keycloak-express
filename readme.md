@@ -63,13 +63,14 @@ Format de message : SAML utilise XML et OpenID Connect utilise JSON
 3. Selectionner le champ client
 4. cliquer sur le boutton
 5. Remplir les champ
-    - Client ID:
-    - Client Protocol:
-    - Root URL:
+    - Client ID: `myclientID`
+    - Client Protocol: `Select the protocol`
+    - Root URL: `the client url`
     - Access Type:
     - Valid Redirect URIs:
 #####  Importer et exporter un realm
   Une fonctionnalité intéressante de Keycloak est la possibilité d'importer et d'exporter un realm. Cela permet de sauvegarder un realm et de le restaurer plus tard. Cela peut être utile pour la migration d'un serveur Keycloak ou pour la mise en place d'un environnement de développement.
+
 ***Exporter un realm***
 1. connecter à la console d'administration de Keycloak
 2. selectioner le realm à exporter
