@@ -3,6 +3,7 @@ import express from 'express';
 import { Issuer, Strategy } from 'openid-client';
 import passport from 'passport';
 import expressSession from 'express-session';
+import config from './config.js';
 
 const app = express();
 
@@ -11,14 +12,15 @@ app.use(express.static('public'))
 
 let clientUserInfo;
 
+
 // use the issuer url here
 const keycloakIssuer = await Issuer.discover("http://localhost:8080/realms/keycloak-express")
 
 console.log('Discovered issuer %s %O', keycloakIssuer.issuer, keycloakIssuer.metadata);
 
 const client = new keycloakIssuer.Client({
-    client_id: 'express-app',
-    client_secret: 'ZXkqvOEAaZC7tWSCvpH0q9OY4gwZBAf1',
+    client_id: config.clientID,
+    client_secret: config.clientSecret,
     redirect_uris: ['http://localhost:3000/auth/callback'],
     post_logout_redirect_uris: ['http://localhost:3000/logout/callback'],
     response_types: ['code'],
@@ -111,12 +113,7 @@ app.get('/logout/callback', (req, res,next) => {
         if (err) { return next(err); }
         res.redirect('/');
       });
-    // // clears the persisted user from the local storage
-    // req.logout();
-    // // redirects the user to a public route
-    // res.redirect('/');
 });
-
 app.listen(3000, function () {
     console.log('Listening at http://localhost:3000');
   });
