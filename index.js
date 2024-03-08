@@ -73,13 +73,25 @@ var checkAuthenticated = (req, res, next) => {
     res.redirect("/login")
 }
 
+let checkAutorized = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        console.log(clientUserInfo.resource_access['express-app'].roles)
+        if(clientUserInfo && clientUserInfo.resource_access['express-app'].roles.includes('admini')){
+            return next()
+        }
+        else{
+            res.status(403).send('Forbidden');
+    
+        }
+    }
+}
 app.get('/testauth', checkAuthenticated, (req, res) => {
      console.log(clientUserInfo)
     let username = clientUserInfo.preferred_username
     res.render('test', {username : username});
 });
 
-app.get('/other', (req, res) => {
+app.get('/other',checkAutorized, (req, res) => {
     res.render('other');
 });
 
@@ -94,11 +106,15 @@ app.get('/logout', (req, res) => {
 });
 
 // logout callback
-app.get('/logout/callback', (req, res) => {
-    // clears the persisted user from the local storage
-    req.logout();
-    // redirects the user to a public route
-    res.redirect('/');
+app.get('/logout/callback', (req, res,next) => {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+      });
+    // // clears the persisted user from the local storage
+    // req.logout();
+    // // redirects the user to a public route
+    // res.redirect('/');
 });
 
 app.listen(3000, function () {
