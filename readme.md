@@ -23,9 +23,11 @@ Dans le contexte de keyCloack, un “client” fait référence à une applicati
 
 - `Consent (consentement)` :autorisation d’un user pour un client donné après login 
 
-- `Access Token` : une partie d’une requête HTTP donnant l'accès à un service. Ce token est fourni par keycloak au client pour autoriser et indiquer que le client a été vérifiée. Il se trouve dans le header
+- `Access Token` : Ce token est délivré lorsqu'un utilisateur s'authentifie avec succès. Il contient des informations sur l'utilisateur et ses autorisations. L'access token est utilisé pour accéder aux ressources protégées par le serveur Keycloak.
   
-- `Indentity Token`: Ce token fournit les information sur l'utilisateur (email, username)
+- `Indentity Token`: Ce token contient des informations sur l'utilisateur qui s'est authentifié. Il est délivré lors du processus d'authentification et peut être utilisé par les clients pour obtenir des détails sur l'utilisateur authentifié. L'ID token est souvent utilisé dans les applications côté client pour afficher des informations sur l'utilisateur connecté.
+  
+- `Refresh token`  : Ce token est utilisé pour obtenir de nouveaux access tokens sans que l'utilisateur ait besoin de s'authentifier à nouveau. Il est souvent utilisé dans les flux d'authentification OAuth 2.0 pour prolonger la durée de validité des sessions utilisateur.
 
 ### `User Federation Provider`
 
@@ -46,11 +48,41 @@ Un groupe est un ensemble d’utilisateurs. Les groupes sont utilisés pour orga
 
 Pour réaliser ses fonctions, keycloak utilise deux protocoles principaux
 - `OpenID Connect`
+L'openID Connect est un protocole d'authentification qui permet de sécuriser une application. Il est basé sur le web et utilise le protocole OAuth 2.0. Il permet de vérifier l'identité d'un utilisateur en utilisant des tokens(JSON Web Token -JWT) auprès d'un fournisseur d'identité(IDP). Il permet également à des applications tierces à accéder à des ressources d'un utilisateur sans avoir à partager les identifiants de l'utilisateur.
 - `SAML2.0` 
+SAML-security assertion markup language est un protocole standard utilisé pour l'authentification unique(SSO) et l'autorisation entre différents systèmes.
+
+##### Différence entre SAML et OpenID Connect
+Saml est basé sur XML 
+OpenID Connect est basé sur OAuth 2.0 et utilise des tokens JWT et permet aux clients d'accéder à des informations supplémentaires sur l'utilisateur.
+Format de message : SAML utilise XML et OpenID Connect utilise JSON
+
+##### Ajouter une application à keycloak
+1. Se connecter à la console administrateur
+2. Selectionner le realm 
+3. Selectionner le champ client
+4. cliquer sur le boutton
+5. Remplir les champ
+    - Client ID:
+    - Client Protocol:
+    - Root URL:
+    - Access Type:
+    - Valid Redirect URIs:
+#####  Importer et exporter un realm
+  Une fonctionnalité intéressante de Keycloak est la possibilité d'importer et d'exporter un realm. Cela permet de sauvegarder un realm et de le restaurer plus tard. Cela peut être utile pour la migration d'un serveur Keycloak ou pour la mise en place d'un environnement de développement.
+***Exporter un realm***
+1. connecter à la console d'administration de Keycloak
+2. selectioner le realm à exporter
+3. cliquer sur le bouton "Export"
+4. sauvegarder le fichier json
+
+***Importer un realm***
+1. cliquer sur le bouton "Select file" et selectionner le fichier json
+2. cliquer sur le bouton "Create" pour importer le realm
+3. le realm est importé avec succès
+4. cliquer sur le bouton "View details" pour voir les détails du realm importé
+  
 Pour intégrer keycloak à une application, il existe différent librairie en fonction du langage de programation utilisé. 
-
-### Reference
-
 
 ---
 ## Structure de l'application web
@@ -91,3 +123,9 @@ Par defaut keycloak n'ajoute pas les informations sur les rôles des utilisateur
   5.  Activer `add to userinfo` (enable)` 
    
 Cette configuration à déjà été faite dans le realm `express-app` de ce projet. Donc en inportant le fichier `express-app.json` dans keycloak, vous n'aurez pas besoin de refaire cette configuration.
+
+
+### References
+- [open-client Documentation](https://github.com/panva/node-openid-client/blob/main/docs/README.md)
+- [keycloak-Documentation](https://github.com/panva/node-openid-client/blob/main/docs/README.md)
+  
