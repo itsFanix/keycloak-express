@@ -14,7 +14,7 @@ let clientUserInfo;
 
 
 // use the issuer url here
-const keycloakIssuer = await Issuer.discover("http://localhost:8080/realms/keycloak-express")
+const keycloakIssuer = await Issuer.discover(config.realmURL)
 
 console.log('Discovered issuer %s %O', keycloakIssuer.issuer, keycloakIssuer.metadata);
 

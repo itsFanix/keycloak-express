@@ -98,11 +98,19 @@ Pour tester ce projet localement sur votre machine suivre ces étapes:
  2. Accèder au dossier dans un terminal `cd /chemin/vers/dossier`
  3. Installer les dépendances de ce projet en faisant `npm install`
  4. Lancer l'application `npm run start`
- 5. Accèder à l'application dans votre navigateur à l'adrresse `http://localhost:3000`
+ 5. Créé un fichier de configuration qui contient les informations de connexion à keycloak. La structure de ce fichier est la suivante:
+    ```json
+    {
+      "realmURL": " à récupérer dans keycloak",
+      "clientID": "à récupérer dans keycloak",
+      "clientSecret": "à récupérer dans keycloak",
+    }
+    ```
+ 6. Accèder à l'application dans votre navigateur à l'adrresse `http://localhost:3000`
 
 ### Configuration de keycloak
 Pour configurer keycloak, il faut:
-1. importer le realm `express-app` dans keycloak 
+1. importer le realm `keycloak-express-realm` dans keycloak 
    
 ### Les utilisateurs de l'application
 Nous avons défini deux groups dans keycloak:
@@ -125,7 +133,9 @@ Par defaut keycloak n'ajoute pas les informations sur les rôles des utilisateur
    
 Cette configuration à déjà été faite dans le realm `express-app` de ce projet. Donc en inportant le fichier `express-app.json` dans keycloak, vous n'aurez pas besoin de refaire cette configuration.
 
-
+### Amélioration de ce projet 
+- Quand nous exportons un realm, les utilisateurs ne sont pas exportés. Il faut les ajouter manuellement dans le nouveau realm. Cependant les roles et les groupes peuvent être exportés.
+- Lorsque un realm est exporté et importé dans un autre serveur keycloak. Dans le fichier de configuration de l'application, il faut changer l'adresse du serveur keycloak et la clé publique du realm.
 ### References
 - [open-client Documentation](https://github.com/panva/node-openid-client/blob/main/docs/README.md)
 - [keycloak-Documentation](https://github.com/panva/node-openid-client/blob/main/docs/README.md)
